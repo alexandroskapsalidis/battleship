@@ -17,6 +17,7 @@
     we add in the next step relative to this div */
     div#board {
       position: relative;
+      color: white;
       width: 1024px;
       height: 863px;
       margin: auto;
@@ -27,6 +28,7 @@
 
 <body>
   <div id="board">
+    <div id="messageArea">Message</div>
     <table>
       <tr>
         <td id="00"></td>
@@ -92,6 +94,10 @@
         <td id="66"></td>
       </tr>
     </table>
+    <form>
+      <input type="text" id="guessInput" placeholder="A0">
+      <input type="button" id="fireButton" value="Fire!">
+    </form>
   </div>
 
   <script src="battleship.js"></script>
