@@ -34,6 +34,51 @@ let model = {
     { locations: ["10", "11", "12"], hits: ["", "", ""] },
   ],
 
+  // This method creates a ships array with the number of ships in the
+  // model's numShips property. For each ship we generate locations and check
+  // to see if those locations overlap with any existing ships.
+  generateShipLocations() {
+    let locations;
+    for (let i = 0; i < this.numShips; i++) {
+      do {
+        locations = this.generateShip();
+      } while (this.collision(locations));
+      this.ships[i].locations = locations;
+    }
+  },
+
+  // The generateShip method creates an array with random locations for one ship.
+  // Each ship can have horizontal or vertical direction
+  generateShip() {
+    let direction = Math.floor(Math.random() * 2);
+    let row;
+    let col;
+    // direction can be 1 or 0. If it is 1, we create a horizontal ship else if it is
+    // 0, we create a vertical ship. First, we'll create a starting location. We should
+    // take care to be able to fit the ship according to the starting point.
+    if (direction === 1) {
+      row = Math.floor(Math.random() * this.boardSize);
+      col = Math.floor(
+        Math.random() * (this.boardSize - (this.shipLength + 1)),
+      );
+    } else {
+      row = Math.floor(
+        Math.random() * (this.boardSize - (this.shipLength + 1)),
+      );
+      col = Math.floor(Math.random() * this.boardSize);
+    }
+    // We'll start with an empty array and add the locations one by one
+    let newShipLocations = [];
+    for (let i = 0; i < this.shipLength; i++) {
+      if (direction === 1) {
+        newShipLocations.push(`${row}${col + i}`);
+      } else {
+        newShipLocations.push(`${row + i}${col}`);
+      }
+    }
+    return newShipLocations;
+  },
+
   fire(guess) {
     for (let i = 0; i < this.numShips; i++) {
       let ship = this.ships[i];
@@ -128,13 +173,48 @@ let controller = {
 // console.log(controller.parseGuess("H0"));
 // console.log(controller.parseGuess("A7"));
 
-controller.processGuess("A0");
-controller.processGuess("A6");
-controller.processGuess("B6");
-controller.processGuess("C6");
-controller.processGuess("C4");
-controller.processGuess("D4");
-controller.processGuess("E4");
-controller.processGuess("B0");
-controller.processGuess("B1");
-controller.processGuess("B2");
+// Testing the processGuess method
+// controller.processGuess("A0");
+// controller.processGuess("A6");
+// controller.processGuess("B6");
+// controller.processGuess("C6");
+// controller.processGuess("C4");
+// controller.processGuess("D4");
+// controller.processGuess("E4");
+// controller.processGuess("B0");
+// controller.processGuess("B1");
+// controller.processGuess("B2");
+
+// Handling the Fire button
+function init() {
+  let fireButton = document.getElementById("fireButton");
+  fireButton.onclick = handleFireButton;
+  // Code to handle pressing the Return key instead of Fire button
+  let guessInput = document.getElementById("guessInput");
+  // This new handler handles key press events from the HTML input field.
+  guessInput.onkeypress = handleKeyPress;
+}
+
+// Getting the player's guess from the form
+function handleFireButton() {
+  let guessInput = document.getElementById("guessInput");
+  let guess = guessInput.value;
+  // We're passing the player's guess to the controller
+  controller.processGuess(guess);
+  guessInput.value = "";
+}
+
+// The key press handler. It's called whenever you press a key in the
+// form input in the page. The browser passes an event object to the handler
+// which has info about which key was pressed.
+function handleKeyPress(e) {
+  let fireButton = document.getElementById("fireButton");
+  // If you press the Return key, the event's keyCode property will be set to 13
+  if (e.keyCode === 13) {
+    fireButton.click();
+    // We return false so the form doesn't submit itsel
+    return false;
+  }
+}
+
+window.onload = init;
