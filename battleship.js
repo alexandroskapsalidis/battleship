@@ -29,9 +29,9 @@ let model = {
   shipLength: 3,
   shipsSunk: 0,
   ships: [
-    { locations: ["06", "16", "26"], hits: ["", "", ""] },
-    { locations: ["24", "34", "44"], hits: ["", "", ""] },
-    { locations: ["10", "11", "12"], hits: ["", "", ""] },
+    { locations: ["0", "0", "0"], hits: ["", "", ""] },
+    { locations: ["0", "0", "0"], hits: ["", "", ""] },
+    { locations: ["0", "0", "0"], hits: ["", "", ""] },
   ],
 
   // This method creates a ships array with the number of ships in the
@@ -128,11 +128,6 @@ let model = {
 // model.fire("16");
 // model.fire("26");
 // model.fire("34");
-// model.fire("24");
-// model.fire("44");
-// model.fire("12");
-// model.fire("11");
-// model.fire("10");
 
 // The controller object
 // The controller's responsibility is to get the player's guess,
@@ -192,11 +187,6 @@ let controller = {
 // controller.processGuess("B6");
 // controller.processGuess("C6");
 // controller.processGuess("C4");
-// controller.processGuess("D4");
-// controller.processGuess("E4");
-// controller.processGuess("B0");
-// controller.processGuess("B1");
-// controller.processGuess("B2");
 
 // Handling the Fire button
 function init() {
@@ -206,6 +196,8 @@ function init() {
   let guessInput = document.getElementById("guessInput");
   // This new handler handles key press events from the HTML input field.
   guessInput.onkeypress = handleKeyPress;
+
+  model.generateShipLocations();
 }
 
 // Getting the player's guess from the form
