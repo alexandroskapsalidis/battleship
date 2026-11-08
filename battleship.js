@@ -79,6 +79,19 @@ let model = {
     return newShipLocations;
   },
 
+  // The collision method takes a ship and checks to see if any of the locations overlap
+  collision(locations) {
+    for (let i = 0; i < this.numShips; i++) {
+      let ship = this.ships[i];
+      for (let j = 0; j < locations.length; j++) {
+        if (ship.locations.includes(locations[j])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
+
   fire(guess) {
     for (let i = 0; i < this.numShips; i++) {
       let ship = this.ships[i];
