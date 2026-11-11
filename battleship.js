@@ -1,4 +1,6 @@
-// The view object
+// The VIEW object
+// Keeps the display updated with hits, misses, and messages
+// for the user
 let view = {
   displayMessage(msg) {
     let messageArea = document.getElementById("messageArea");
@@ -17,12 +19,11 @@ let view = {
 // view.displayMiss("00");
 // view.displayHit("34");
 // view.displayMiss("55");
-// view.displayHit("12");
-// view.displayMiss("25");
-// view.displayHit("26");
-// view.displayMessage("Tap tap, is this thing on?");
+// view.displayMessage("Test, Test, Test");
 
-// The model object
+// The MODEL object
+// Keeps track of the ships ex. where they are, if they've been hit,
+// and if they've been sunk
 let model = {
   boardSize: 7,
   numShips: 3,
@@ -92,21 +93,24 @@ let model = {
     return false;
   },
 
+  // Firing on a ship and figuring out if the shot is a hit or a miss
   fire(guess) {
     for (let i = 0; i < this.numShips; i++) {
       let ship = this.ships[i];
       let locations = ship.locations;
       let index = locations.indexOf(guess);
+      // We could chain the above three lines to the following
+      // let index = this.ships[i].locations.indexOf(guess);
       if (index >= 0) {
         ship.hits[index] = "hit";
-        // Notify the view that we got a hit at the location in guess.
-        // And ask the view to display the message "HIT!""
+        // We notify the view that we got a hit at the location in guess
+        // and ask it to display the message "HIT!"
         view.displayHit(guess);
         view.displayMessage("HIT!");
         if (this.isSunk(ship)) {
+          this.shipsSunk++;
           // Let the player know that this hit sank the battleship!
           view.displayMessage("You sank my battleship!");
-          this.shipsSunk++;
         }
         return true;
       }
@@ -117,6 +121,7 @@ let model = {
     view.displayMessage("You missed.");
     return false;
   },
+
   isSunk(ship) {
     return !ship.hits.includes("");
   },
@@ -130,13 +135,15 @@ let model = {
 // model.fire("34");
 
 // The controller object
-// The controller's responsibility is to get the player's guess,
-// make sure it's valid, and then get it to the model object.
+// Glues everything together. Manages communication between the view,
+// the model, and the user. Is responsible for getting the player's
+// input and executing the game logic.
 let controller = {
   guesses: 0,
 
   // helper method
   parseGuess(guess) {
+    // Helper array
     const alphabet = ["A", "B", "C", "D", "E", "F", "G"];
     if (guess === null || guess.length !== 2) {
       alert("Oops, please enter a letter and a number on the board.");
@@ -154,9 +161,11 @@ let controller = {
       ) {
         alert("Oops, that's off the board!");
       } else {
+        // If everything is good we return the location as a string
         return row + column;
       }
     }
+    // If we get here, there was a failed check along the way
     return null;
   },
 
@@ -169,6 +178,8 @@ let controller = {
         view.displayMessage(
           `You sank all my battleships, in ${this.guesses} guesses`,
         );
+        let guessInput = document.getElementById("guessInput");
+        guessInput.setAttribute("disabled", "true");
       }
     }
   },
