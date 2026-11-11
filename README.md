@@ -6,7 +6,7 @@ A browser-based **Battleship** game built using **HTML5**, **CSS3**, and pure **
 
 ## About the Project
 
-Unlike simple command-line or basic alert-box toy games, this web application delivers a full interactive experience. It features a radar-style visual game board grid overlay, dynamic ship placement, real-time feedback for hits and misses, form-based coordinate inputs, and win/loss condition tracking.
+This web application delivers a full interactive experience. It features a radar-style visual game board grid overlay, dynamic ship placement, real-time feedback for hits and misses, form-based coordinate inputs, and win/loss condition tracking.
 
 ---
 
@@ -42,4 +42,4 @@ The application relies on three core JavaScript components:
 
 View the project online using the following credentials
 
-<p>Live Demo 🌐: <a href="https://" target="_blank">Battleship</a></p>
+<p>Live Demo 🌐: <a href="https://alexandroskapsalidis.github.io/battleship/" target="_blank">Battleship</a></p>
